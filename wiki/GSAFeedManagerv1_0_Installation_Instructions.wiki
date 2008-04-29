@@ -21,7 +21,7 @@ This page contains the installation instructions for the GSA Feed Manager. All t
 ==>NOTE: Before starting, it is important to make sure that you meet the requirements for the feed manager
 
 
-===Download and UnPack Feed Manager===
+===Download and UnZip Feed Manager===
 
 Unzip the file feedManager_v1.0.zip file where you want to have the feed
 manager run.  This will create the appropriate directory, and all the default
