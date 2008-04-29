@@ -1,0 +1,140 @@
+#summary One-sentence summary of this page.
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+This page contains the installation instructions for the GSA Feed Manager. All the appropriate files can be found in the zip file that is available in the downloads section.
+
+
+= Details =
+
+===Requirements===
+
+  * one or more GSAs v4.6.4+
+  * python v2.4+ or ActivePython? 2.4+ must be installed on the machine where you will be installing the feed manager
+  * in order to do the XML and feed validation, the lxml python library must be installed. You can find this library at: http://codespeak.net/lxml/
+
+==Installation Instructions==
+
+==> NOTE: Google does not warranty or in any way guarantee the reliability of this code. Use it at your own risk.
+
+==>NOTE: Before starting, it is important to make sure that you meet the requirements for the feed manager
+
+
+===Download and UnPack Feed Manager===
+
+Unzip the file feedManager_v1.0.zip file where you want to have the feed
+manager run.  This will create the appropriate directory, and all the default
+locations for the archives and logs.
+
+
+===Configure Feed Manager===
+
+Configure the feed manager by editing the feedManager.cfg file.
+
+In the server section, enter in the host and port that the feed manager will
+be running on.  You can either enter in localhost, 127.0.0.1, or the actual
+IP of the machine.  For example:
+
+{{{
+[server]
+host:localhost
+port:19900
+}}}
+
+In the logger section, put in the path to the directory where the logs will
+be stored, the name of the main logfile, and the extension of the log files.
+For example:
+
+{{{
+[logger]
+logdir:c:\projects\feed_manager\logs\
+logname:feedManager
+logext:.log
+}}}
+
+In the archiver section, put in the path to the directory where the archive
+files will be stored.  For example:
+
+{{{
+[archiver]
+archivedir:c:\projects\feed_manager\archives\
+}}}
+
+In the validator section, put in the path to the feed.dtd file which will
+be used to validate the feed xml files that are sent to the feed manager.
+For example:
+
+{{{
+[validator]
+feeddtd:c:\projects\feed_manager\feed.dtd
+}}}
+
+For each data source that will be fed into the feed manager, you will
+require a section in the feed manager.  For example, if the data source
+name was feedsource1, then the section name in the configuration file would
+be feedsource1 (see below).  
+
+Set the value of number to the number of GSAs that you will be submitting
+the feed two.  In the example below, the number is 2 as we are submitting
+the feed to two different GSAs.  You must also set the destinationhost# and
+destinationport# for each host that you will be submitting a feed to.  Please
+note that # is the actual number of the host in the configuration file
+(see example below).
+
+If you wish to perform a transformation on the feed that is received, before
+it is submitted, set the value of transformFeed to True and set transformXSL
+to the full path and filename to the XSLT that will be used to transform the
+feed.
+
+{{{
+[feedsource1]
+transformFeed:False
+transformXSL:c:\projects\feed_manager\feed.xsl
+number:2
+destinationhost1:somehost1.yourdomain.com
+destinationport1:19900
+destinationhost2:somehost2.yourdomain.com
+destinationport2:19900
+}}}
+
+===Modify Feed Manager Program===
+
+Modify the feedManager.py file, to change the first line to point to your
+instance of python.  This needs to be done, as it defines which instance of
+python you will be using.  This is especially important if you have more
+than one version of python installed on the machine where the feed manager
+will be running.
+
+For example, if you use ActivePython v2.5 and it is installed in the c:
+directory then you would change the line to:
+
+{{{
+#!c:\Python25\python25.exe
+}}}
+
+If you use python on unix/linux, and the executable is in /usr/bin, then you
+would change the line to:
+
+{{{
+#!/usr/bin/python
+}}}
+
+
+===Starting Up the Feed Manager===
+
+Starting up the feed manager is as easy as typing in:
+
+{{{
+./feedManager.py
+}}}
+ 
+It can also be started by specifying python (you may have to specify the full
+path to python if it isn't in your current path) in front of it as so:
+
+{{{
+python feedManager.py
+}}}
+
+You can make sure that the feed manager is running, by looking at the feed
+manager log file, as defined in the feed manager configuration.
