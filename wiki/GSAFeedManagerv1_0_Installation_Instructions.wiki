@@ -11,7 +11,7 @@ This page contains the installation instructions for the GSA Feed Manager. All t
 ===Requirements===
 
   * one or more GSAs v4.6.4+
-  * python v2.4+ or ActivePython? 2.4+ must be installed on the machine where you will be installing the feed manager
+  * python v2.4+ or ActivePython v2.4+ must be installed on the machine where you will be installing the feed manager
   * in order to do the XML and feed validation, the lxml python library must be installed. You can find this library at: http://codespeak.net/lxml/
 
 ==Installation Instructions==
