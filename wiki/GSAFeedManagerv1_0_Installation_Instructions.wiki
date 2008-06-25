@@ -1,9 +1,9 @@
-#summary One-sentence summary of this page.
+#summary Installation Instructions for GSA Feed Manager v1.2
 #labels Featured,Phase-Deploy
 
 = Introduction =
 
-This page contains the installation instructions for the GSA Feed Manager. All the appropriate files can be found in the zip file that is available in the downloads section.
+This page contains the installation instructions for the GSA Feed Manager v1.2. All the appropriate files can be found in the zip file that is available in the downloads section.
 
 
 = Details =
@@ -23,7 +23,7 @@ This page contains the installation instructions for the GSA Feed Manager. All t
 
 ===Download and UnZip Feed Manager===
 
-Unzip the file feedManager_v1.0.zip file where you want to have the feed
+Unzip the file feedManager_v1.2.zip file where you want to have the feed
 manager run.  This will create the appropriate directory, and all the default
 locations for the archives and logs.
 
@@ -31,6 +31,29 @@ locations for the archives and logs.
 ===Configure Feed Manager===
 
 Configure the feed manager by editing the feedManager.cfg file.
+
+In the general section, enter in the feeder type.  Valid values for feeder
+type are server or directory.  If the feeder type is directory, you will
+also have to configure the directory where the feed manager watches via
+the filefeederdir value and the extension of files that the feed manager is
+looking for using the filefeederextension value.  Lastly you will need to
+configure the filefeedersleeptime and serverfeedersleeptime.  Both of these
+values determine just how long the feeder will sleep between checks for new
+feeds.  I would suggest 30 to 60 seconds for the filefeedersleeptime and
+between 1 and 10 seconds for the serverfeedersleeptime.
+For example:
+
+{{{
+[general]
+# Valid feed types are server or directory
+# feedertype:directory
+feedertype:server
+filefeederdir:c:\projects\feed_manager\feeds\
+filefeederextension:.xml
+filefeedersleeptime:60
+serverfeedersleeptime:5
+}}}
+
 
 In the server section, enter in the host and port that the feed manager will
 be running on.  You can either enter in localhost, 127.0.0.1, or the actual
@@ -41,6 +64,7 @@ IP of the machine.  For example:
 host:localhost
 port:19900
 }}}
+
 
 In the logger section, put in the path to the directory where the logs will
 be stored, the name of the main logfile, and the extension of the log files.
@@ -53,6 +77,7 @@ logname:feedManager
 logext:.log
 }}}
 
+
 In the archiver section, put in the path to the directory where the archive
 files will be stored.  For example:
 
@@ -60,6 +85,7 @@ files will be stored.  For example:
 [archiver]
 archivedir:c:\projects\feed_manager\archives\
 }}}
+
 
 In the validator section, put in the path to the feed.dtd file which will
 be used to validate the feed xml files that are sent to the feed manager.
@@ -70,10 +96,48 @@ For example:
 feeddtd:c:\projects\feed_manager\feed.dtd
 }}}
 
+
+In the notifier section, put in the from email address, whether the SMTP server
+requires a SSL connection, the SMTP server host and port, and lastly, the
+username and password to authenticate to the SMTP server.
+For example:
+
+{{{
+[notifier]
+fromemail:gsa_feed_manager@gmail.com
+smtpssl:True
+smtpserverhost:smtp.gmail.com
+smtpserverport:587
+authuser:gsa_feed_manager@gmail.com
+authpassword:gsa_feed_managerspassword
+}}}
+
+or
+
+{{{
+[notifier]
+fromemail:someuser@yourcorp.com
+smtpssl:False
+smtpserverhost:smtp.yourcorp.com
+smtpserverport:25
+authuser:someuser
+authpassword:someuserspassword
+}}}
+
+
 For each data source that will be fed into the feed manager, you will
 require a section in the feed manager.  For example, if the data source
 name was feedsource1, then the section name in the configuration file would
-be feedsource1 (see below).  
+be feedsource1 (see below).
+
+If you wish to perform a transformation on the feed that is received, before
+it is submitted, set the value of transformFeed to True and set transformXSL
+to the full path and filename to the XSLT that will be used to transform the
+feed.
+
+For sending email notifications to a user when a feed is submitted (both
+successfully and unsuccessfully), you must set notifyuser to True and
+put in a valid email address for the person to be notified.
 
 Set the value of number to the number of GSAs that you will be submitting
 the feed two.  In the example below, the number is 2 as we are submitting
@@ -82,15 +146,12 @@ destinationport# for each host that you will be submitting a feed to.  Please
 note that # is the actual number of the host in the configuration file
 (see example below).
 
-If you wish to perform a transformation on the feed that is received, before
-it is submitted, set the value of transformFeed to True and set transformXSL
-to the full path and filename to the XSLT that will be used to transform the
-feed.
-
 {{{
 [feedsource1]
 transformFeed:False
 transformXSL:c:\projects\feed_manager\feed.xsl
+notifyuser:True
+toEmail:someuser@yourcorp.com
 number:2
 destinationhost1:somehost1.yourdomain.com
 destinationport1:19900
